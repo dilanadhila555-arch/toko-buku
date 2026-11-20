@@ -54,7 +54,11 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+        if ($book->orders()->exists()) {
+            return response()->json(['message' => 'Buku sudah pernah dipesan'], 409);
+        }
         $book->delete();
+
         return response()->noContent();
     }
 }
